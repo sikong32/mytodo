@@ -1,0 +1,9 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Sign up",
+    "calendar": "Calendar"
+  }
+} 

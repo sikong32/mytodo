@@ -1,0 +1,9 @@
+{
+  "common": {
+    "welcome": "ようこそ",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "signup": "サインアップ",
+    "calendar": "カレンダー"
+  }
+} 

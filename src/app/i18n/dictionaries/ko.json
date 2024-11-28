@@ -1,0 +1,18 @@
+{
+  "common": {
+    "welcome": "환영합니다",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "signup": "회원가입",
+    "calendar": "캘린더"
+  },
+  "auth": {
+    "email": "이메일",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "name": "이름",
+    "signupButton": "가입하기",
+    "alreadyHaveAccount": "이미 계정이 있으신가요?",
+    "noAccount": "계정이 없으신가요?"
+  }
+} 
