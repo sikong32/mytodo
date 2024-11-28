@@ -1,18 +1,37 @@
 {
   "common": {
-    "welcome": "환영합니다",
+    "appName": "일정 관리",
     "login": "로그인",
+    "register": "회원가입",
     "logout": "로그아웃",
-    "signup": "회원가입",
-    "calendar": "캘린더"
-  },
-  "auth": {
+    "calendar": "캘린더",
     "email": "이메일",
     "password": "비밀번호",
-    "confirmPassword": "비밀번호 확인",
-    "name": "이름",
-    "signupButton": "가입하기",
-    "alreadyHaveAccount": "이미 계정이 있으신가요?",
-    "noAccount": "계정이 없으신가요?"
+    "loading": "로딩중..."
+  },
+  "auth": {
+    "loginTitle": "로그인",
+    "registerTitle": "회원가입",
+    "emailPlaceholder": "이메일을 입력하세요",
+    "passwordPlaceholder": "비밀번호를 입력하세요",
+    "loginButton": "로그인하기",
+    "registerButton": "가입하기",
+    "loginError": "로그인에 실패했습니다",
+    "registerError": "회원가입에 실패했습니다",
+    "emailConfirmation": "이메일 인증이 필요합니다",
+    "resendEmail": "인증 메일 재발송",
+    "emailSent": "인증 메일이 발송되었습니다"
+  },
+  "home": {
+    "welcome": "환영합니다",
+    "description": "개인 일정 관리 서비스입니다",
+    "getStarted": "시작하기",
+    "features": {
+      "title": "주요 기능",
+      "calendar": "캘린더 뷰",
+      "scheduling": "일정 관리",
+      "darkMode": "다크 모드",
+      "multiLanguage": "다국어 지원"
+    }
   }
 } 

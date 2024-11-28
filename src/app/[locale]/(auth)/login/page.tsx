@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 
-export default function Login() {
+export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -26,7 +26,7 @@ export default function Login() {
 
       if (signInError) {
         if (signInError.message.includes('Email not confirmed')) {
-          setError('이메일 인증이 필요합니다. 인증 메일을 확인해주세요.')
+          setError('이메일 인증이 필요합니다')
           setShowResendButton(true)
           return
         }
@@ -38,7 +38,7 @@ export default function Login() {
         router.refresh()
       }
     } catch (error: any) {
-      setError(error.message || '로그인에 실패했습니다.')
+      setError(error.message || '로그인에 실패했습니다')
     } finally {
       setLoading(false)
     }
@@ -53,7 +53,7 @@ export default function Login() {
       
       if (error) throw error
       
-      alert('인증 메일이 재발송되었습니다. 이메일을 확인해주세요.')
+      alert('인증 메일이 재발송되었습니다')
     } catch (error: any) {
       setError(error.message)
     }
@@ -70,6 +70,7 @@ export default function Login() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="이메일을 입력하세요"
             className="mt-1 w-full rounded-md border p-2"
             required
           />
@@ -81,6 +82,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="비밀번호를 입력하세요"
             className="mt-1 w-full rounded-md border p-2"
             required
           />
@@ -103,7 +105,7 @@ export default function Login() {
           disabled={loading}
           className="w-full rounded-md bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
         >
-          {loading ? '로그인중...' : '로그인'}
+          {loading ? '로딩중...' : '로그인'}
         </button>
       </form>
     </div>

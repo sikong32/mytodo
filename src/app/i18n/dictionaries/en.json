@@ -1,9 +1,37 @@
 {
   "common": {
-    "welcome": "Welcome",
+    "appName": "Schedule Manager",
     "login": "Login",
+    "register": "Register",
     "logout": "Logout",
-    "signup": "Sign up",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "email": "Email",
+    "password": "Password",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Register",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "loginButton": "Sign In",
+    "registerButton": "Sign Up",
+    "loginError": "Login failed",
+    "registerError": "Registration failed",
+    "emailConfirmation": "Email confirmation required",
+    "resendEmail": "Resend confirmation email",
+    "emailSent": "Confirmation email has been sent"
+  },
+  "home": {
+    "welcome": "Welcome",
+    "description": "Personal Schedule Management Service",
+    "getStarted": "Get Started",
+    "features": {
+      "title": "Features",
+      "calendar": "Calendar View",
+      "scheduling": "Schedule Management",
+      "darkMode": "Dark Mode",
+      "multiLanguage": "Multi-language Support"
+    }
   }
 } 

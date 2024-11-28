@@ -1,9 +1,37 @@
 {
   "common": {
-    "welcome": "ようこそ",
+    "appName": "スケジュール管理",
     "login": "ログイン",
+    "register": "会員登録",
     "logout": "ログアウト",
-    "signup": "サインアップ",
-    "calendar": "カレンダー"
+    "calendar": "カレンダー",
+    "email": "メール",
+    "password": "パスワード",
+    "loading": "読み込み中..."
+  },
+  "auth": {
+    "loginTitle": "ログイン",
+    "registerTitle": "会員登録",
+    "emailPlaceholder": "メールアドレスを入力",
+    "passwordPlaceholder": "パスワードを入力",
+    "loginButton": "ログイン",
+    "registerButton": "登録",
+    "loginError": "ログインに失敗しました",
+    "registerError": "登録に失敗しました",
+    "emailConfirmation": "メール認証が必要です",
+    "resendEmail": "認証メールを再送信",
+    "emailSent": "認証メールを送信しました"
+  },
+  "home": {
+    "welcome": "ようこそ",
+    "description": "個人スケジュール管理サービス",
+    "getStarted": "始める",
+    "features": {
+      "title": "主な機能",
+      "calendar": "カレンダービュー",
+      "scheduling": "スケジュール管理",
+      "darkMode": "ダークモード",
+      "multiLanguage": "多言語対応"
+    }
   }
 } 

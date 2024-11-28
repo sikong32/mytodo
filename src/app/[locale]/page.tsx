@@ -13,7 +13,7 @@ export default async function HomePage({
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
-          {dict.common.welcome}
+          {dict.home.welcome}
         </h1>
         <div className="flex flex-col space-y-4">
           <Link 
@@ -23,10 +23,10 @@ export default async function HomePage({
             {dict.common.login}
           </Link>
           <Link 
-            href={`/${locale}/signup`}
+            href={`/${locale}/register`}
             className="w-full py-3 px-4 text-center border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors"
           >
-            {dict.common.signup}
+            {dict.common.register}
           </Link>
           <Link 
             href={`/${locale}/calendar`}

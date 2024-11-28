@@ -1,0 +1,37 @@
+{
+  "common": {
+    "appName": "日程管理",
+    "login": "登录",
+    "register": "注册",
+    "logout": "登出",
+    "calendar": "日历",
+    "email": "邮箱",
+    "password": "密码",
+    "loading": "加载中..."
+  },
+  "auth": {
+    "loginTitle": "登录",
+    "registerTitle": "注册",
+    "emailPlaceholder": "请输入邮箱",
+    "passwordPlaceholder": "请输入密码",
+    "loginButton": "登录",
+    "registerButton": "注册",
+    "loginError": "登录失败",
+    "registerError": "注册失败",
+    "emailConfirmation": "需要邮箱验证",
+    "resendEmail": "重新发送验证邮件",
+    "emailSent": "验证邮件已发送"
+  },
+  "home": {
+    "welcome": "欢迎",
+    "description": "个人日程管理服务",
+    "getStarted": "开始使用",
+    "features": {
+      "title": "主要功能",
+      "calendar": "日历视图",
+      "scheduling": "日程管理",
+      "darkMode": "深色模式",
+      "multiLanguage": "多语言支持"
+    }
+  }
+} 
