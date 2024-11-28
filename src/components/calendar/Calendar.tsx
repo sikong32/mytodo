@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { Schedule } from '@/types/database.types'
-import AddEventModal from './AddEventModal'
+import { AddEventModal } from './AddEventModal'
 
 export default function Calendar() {
   const [isModalOpen, setIsModalOpen] = useState(false)
