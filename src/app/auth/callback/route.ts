@@ -12,5 +12,5 @@ export async function GET(request: Request) {
   }
 
   // 인증 성공 후 리다이렉션할 페이지
-  return NextResponse.redirect(new URL('/login', request.url));
+  return NextResponse.redirect(new URL('/en/calendar', request.url));
 } 

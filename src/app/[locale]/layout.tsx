@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import '../globals.css'
 import React from 'react'
 import Header from '@/components/common/Header'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function LocaleLayout({
         <main className="pt-16">
           {children}
         </main>
+        <SpeedInsights />
       </body>
     </html>
   )
