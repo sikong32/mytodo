@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub, FaGoogle } from 'react-icons/fa'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -75,6 +75,21 @@ export default function LoginPage() {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
+
+      if (error) throw error
+    } catch (error: any) {
+      setError(error.message || 'Google 로그인에 실패했습니다')
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center">
       <form onSubmit={handleSignIn} className="w-full max-w-md space-y-4 p-8">
@@ -124,15 +139,7 @@ export default function LoginPage() {
         >
           {loading ? '로딩중...' : '로그인'}
         </button>
-        
-        <button
-          type="button"
-          onClick={handleGitHubSignIn}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-gray-800 py-2 text-white hover:bg-gray-900"
-        >
-          <FaGithub className="text-xl" />
-          GitHub로 로그인
-        </button>
+
 
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
@@ -142,6 +149,27 @@ export default function LoginPage() {
             <span className="bg-white px-2 text-gray-500">또는</span>
           </div>
         </div>
+
+        <div className="space-y-2">
+          <button
+            type="button"
+            onClick={handleGitHubSignIn}
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-gray-800 py-2 text-white hover:bg-gray-900"
+          >
+            <FaGithub className="text-xl" />
+            GitHub
+          </button>
+
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-white py-2 text-gray-600 hover:bg-gray-50 border border-gray-300"
+          >
+            <FaGoogle className="text-xl text-blue-500" />
+            Google
+          </button>
+        </div>
+        
       </form>
     </div>
   )
