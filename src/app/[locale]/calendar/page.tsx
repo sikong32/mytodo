@@ -1,13 +1,22 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import Calendar from '@/components/calendar/Calendar'
-import Loading from './loading'
+import CalendarSkeleton from '@/components/calendar/CalendarSkeleton'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-export default function CalendarPage() {
+export default async function CalendarPage() {
+  const supabase = createServerComponentClient({ cookies })
+  const { data: { session } } = await supabase.auth.getSession()
+
+  if (!session) {
+    redirect('/login')
+  }
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">일정 관리</h1>
-      <Suspense fallback={<Loading />}>
-        <Calendar />
+      <Suspense fallback={<CalendarSkeleton />}>
+        <Calendar userId={session.user.id} />
       </Suspense>
     </div>
   )

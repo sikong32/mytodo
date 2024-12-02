@@ -4,6 +4,7 @@ import '../globals.css'
 import React from 'react'
 import Header from '@/components/common/Header'
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Providers from '@/components/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,11 +22,13 @@ export default function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={inter.className}>
-        <Header />
-        <main className="pt-16">
-          {children}
-        </main>
-        <SpeedInsights />
+        <Providers>
+          <Header />
+          <main className="pt-16">
+            {children}
+          </main>
+          <SpeedInsights />
+        </Providers>
       </body>
     </html>
   )

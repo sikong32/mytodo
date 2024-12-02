@@ -5,38 +5,33 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Modal from '@/components/common/Modal'
 
-interface AddEventModalProps {
+interface EditEventModalProps {
   isOpen: boolean
   onClose: () => void
-  selectedDate: Date | null
+  event: any
   userId: string
 }
 
-export default function AddEventModal({
+export default function EditEventModal({
   isOpen,
   onClose,
-  selectedDate,
+  event,
   userId
-}: AddEventModalProps) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [startTime, setStartTime] = useState(selectedDate?.toISOString().slice(0, 16) || '')
-  const [endTime, setEndTime] = useState('')
-  
+}: EditEventModalProps) {
+  const [title, setTitle] = useState(event.title)
+  const [description, setDescription] = useState(event.description || '')
+  const [startTime, setStartTime] = useState(event.start?.toISOString().slice(0, 16) || '')
+  const [endTime, setEndTime] = useState(event.end?.toISOString().slice(0, 16) || '')
+
   const supabase = createClientComponentClient()
   const queryClient = useQueryClient()
 
-  const { mutate: addEvent } = useMutation({
-    mutationFn: async (newEvent: any) => {
+  const { mutate: updateEvent } = useMutation({
+    mutationFn: async (updatedEvent: any) => {
       const { data, error } = await supabase
         .from('schedules')
-        .insert([{
-          user_id: userId,
-          title: newEvent.title,
-          description: newEvent.description,
-          start_time: new Date(newEvent.start_time).toISOString(),
-          end_time: new Date(newEvent.end_time).toISOString(),
-        }])
+        .update(updatedEvent)
+        .eq('id', event.id)
         .select()
       
       if (error) throw error
@@ -45,15 +40,12 @@ export default function AddEventModal({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] })
       onClose()
-    },
-    onError: (error) => {
-      console.error('Error adding event:', error)
     }
   })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    addEvent({
+    updateEvent({
       title,
       description,
       start_time: startTime,
@@ -62,7 +54,7 @@ export default function AddEventModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="일정 추가">
+    <Modal isOpen={isOpen} onClose={onClose} title="일정 수정">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">제목</label>
@@ -120,4 +112,4 @@ export default function AddEventModal({
       </form>
     </Modal>
   )
-}
+} 

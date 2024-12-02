@@ -54,6 +54,16 @@ export default function RegisterPage() {
       })
 
       if (authError) throw authError
+      
+      const { data: existingProfile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('email', formData.email)
+          .single();
+
+        if (existingProfile) {
+          throw new Error('이미 동일한 이메일로 등록된 사용자가 있습니다.');
+        }
 
       if (authData.user) {
         const { error: profileError } = await supabase
@@ -160,7 +170,9 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-md bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
+          className={`w-full rounded-md bg-blue-500 py-2 text-white hover:bg-blue-600 ${
+            loading ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
           {loading ? '처리중...' : '가입하기'}
         </button>
