@@ -11,7 +11,7 @@ import AddEventModal from './AddEventModal'
 import EditEventModal from './EditEventModal'
 import { Schedule } from '@/types/schedule'
 import { getHolidays } from '@/lib/holidays'
-import { addDays, addWeeks, addMonths } from 'date-fns'
+import { addDays, addWeeks, addMonths, addYears } from 'date-fns'
 
 interface CalendarProps {
   userId: string
@@ -25,44 +25,68 @@ function generateRecurringEvents(event: any) {
   const endDate = new Date(event.end_time)
   const duration = endDate.getTime() - startDate.getTime()
   
-  const patternEndDate = endDate
+  events.push({
+    ...event,
+    id: `${event.id}_${startDate.getTime()}`,
+    start: startDate,
+    end: endDate,
+    start_time: startDate,
+    end_time: endDate,
+    isRecurringInstance: true,
+    originalEventId: event.id
+  })
 
+  let maxDate: Date
   switch (event.recurring_pattern) {
     case 'daily':
-      let dailyDate = startDate
-      while (dailyDate <= patternEndDate) {
-        events.push({
-          ...event,
-          start: new Date(dailyDate),
-          end: new Date(dailyDate.getTime() + duration)
-        })
-        dailyDate = addDays(dailyDate, 1)
-      }
+      maxDate = addYears(startDate, 2)
       break
-
     case 'weekly':
-      let weeklyDate = startDate
-      while (weeklyDate <= patternEndDate) {
-        events.push({
-          ...event,
-          start: new Date(weeklyDate),
-          end: new Date(weeklyDate.getTime() + duration)
-        })
-        weeklyDate = addWeeks(weeklyDate, 1)
-      }
+      maxDate = addYears(startDate, 2)
       break
-
     case 'monthly':
-      let monthlyDate = startDate
-      while (monthlyDate <= patternEndDate) {
-        events.push({
-          ...event,
-          start: new Date(monthlyDate),
-          end: new Date(monthlyDate.getTime() + duration)
-        })
-        monthlyDate = addMonths(monthlyDate, 1)
-      }
+      maxDate = addYears(startDate, 5)
       break
+    case 'yearly':
+      maxDate = addYears(startDate, 10)
+      break
+    default:
+      return [event]
+  }
+
+  let prevEventStart = startDate
+  while (true) {
+    let nextEventStart
+    switch (event.recurring_pattern) {
+      case 'daily':
+        nextEventStart = addDays(prevEventStart, 1)
+        break
+      case 'weekly':
+        nextEventStart = addWeeks(prevEventStart, 1)
+        break
+      case 'monthly':
+        nextEventStart = addMonths(prevEventStart, 1)
+        break
+      case 'yearly':
+        nextEventStart = addYears(prevEventStart, 1)
+        break
+    }
+
+    if (nextEventStart > maxDate) break
+
+    const nextEventEnd = new Date(nextEventStart.getTime() + duration)
+    events.push({
+      ...event,
+      id: `${event.id}_${nextEventStart.getTime()}`,
+      start: nextEventStart,
+      end: nextEventEnd,
+      start_time: nextEventStart,
+      end_time: nextEventEnd,
+      isRecurringInstance: true,
+      originalEventId: event.id
+    })
+
+    prevEventStart = nextEventStart
   }
 
   return events
@@ -176,11 +200,11 @@ export default function Calendar({ userId }: CalendarProps) {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         }}
+        allDaySlot={false}
         editable={true}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
-        events={events}
         select={handleDateSelect}
         eventClick={handleEventClick}
         locale="ko"

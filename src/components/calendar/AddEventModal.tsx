@@ -13,6 +13,16 @@ interface AddEventModalProps {
   userId: string
 }
 
+// 카테고리별 기본 색상 매핑
+const DEFAULT_CATEGORY_COLORS = {
+  default: '#3788d8',
+  work: '#6c757d',
+  personal: '#28a745',
+  family: '#ffc107',
+  holiday: '#dc3545',
+  other: '#6f42c1'
+} as const
+
 export default function AddEventModal({
   isOpen,
   onClose,
@@ -89,9 +99,6 @@ export default function AddEventModal({
     { value: '#dc3545', label: '빨강' },
     { value: '#ffc107', label: '노랑' },
     { value: '#6f42c1', label: '보라' },
-    { value: '#fd7e14', label: '주황' },
-    { value: '#e83e8c', label: '분홍' },
-    { value: '#20c997', label: '청록' },
     { value: '#6c757d', label: '회색' }
   ]
 
@@ -104,21 +111,42 @@ export default function AddEventModal({
     { value: 'other', label: '기타' }
   ]
 
-  const [color, setColor] = useState(colors[0].value)
+  const [category, setCategory] = useState('default')
+  const [color, setColor] = useState<string>(DEFAULT_CATEGORY_COLORS.default)
   const [isRecurring, setIsRecurring] = useState(false)
   const [recurringPattern, setRecurringPattern] = useState('')
-  const [category, setCategory] = useState('default')
+
+  // 카테고리 변경 시 기본 색상도 자동 변경
+  const handleCategoryChange = (newCategory: string) => {
+    setCategory(newCategory)
+    setColor(DEFAULT_CATEGORY_COLORS[newCategory as keyof typeof DEFAULT_CATEGORY_COLORS])
+  }
 
   const recurringOptions = [
     { value: '', label: '반복 안함' },
     { value: 'daily', label: '매일' },
     { value: 'weekly', label: '매주' },
-    { value: 'monthly', label: '매월' }
+    { value: 'monthly', label: '매월' },
+    { value: 'yearly', label: '매년' }
   ]
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="일정 추가">
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">카테고리</label>
+          <select
+            value={category}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          >
+            {categories.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">제목</label>
           <input
@@ -158,7 +186,7 @@ export default function AddEventModal({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">색상</label>
+          <label className="block text-sm font-medium text-gray-700">색상 (선택사항)</label>
           <div className="mt-1 flex flex-wrap gap-2">
             {colors.map((c) => (
               <button
@@ -195,20 +223,6 @@ export default function AddEventModal({
               ))}
             </select>
           </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">카테고리</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          >
-            {categories.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
         </div>
         <div className="flex justify-end space-x-2">
           <button
