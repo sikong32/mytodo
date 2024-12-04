@@ -139,7 +139,6 @@ export default function Calendar({ userId }: CalendarProps) {
         return [...acc, ...expandedEvents]
       }, []) || []
 
-      console.log('Fetched events:', allEvents)
       return allEvents
     },
     refetchOnWindowFocus: false
