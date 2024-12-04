@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -12,9 +13,10 @@ import EditEventModal from './EditEventModal'
 import { Schedule } from '@/types/schedule'
 import { getHolidays } from '@/lib/holidays'
 import { addDays, addWeeks, addMonths, addYears } from 'date-fns'
+import Modal from '@/components/common/Modal'
 
 interface CalendarProps {
-  userId: string
+  userId?: string
 }
 
 function generateRecurringEvents(event: any) {
@@ -98,6 +100,7 @@ export default function Calendar({ userId }: CalendarProps) {
   const [selectedEvent, setSelectedEvent] = useState<Schedule | null>(null)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   
   const supabase = createClientComponentClient()
   const queryClient = useQueryClient()
@@ -165,6 +168,10 @@ export default function Calendar({ userId }: CalendarProps) {
   })
 
   const handleDateSelect = (selectInfo: any) => {
+    if (!userId) {
+      setShowLoginModal(true)
+      return
+    }
     setSelectedDate(selectInfo.start)
     setIsAddModalOpen(true)
     const endDate = selectInfo.end
@@ -175,6 +182,10 @@ export default function Calendar({ userId }: CalendarProps) {
   }
 
   const handleEventClick = (clickInfo: any) => {
+    if (!userId) {
+      setShowLoginModal(true)
+      return
+    }
     setSelectedEvent(clickInfo.event)
     setIsEditModalOpen(true)
   }
@@ -188,7 +199,17 @@ export default function Calendar({ userId }: CalendarProps) {
   }
 
   const currentYear = new Date().getFullYear()
-  const holidays = getHolidays(currentYear, 'ko')
+  const years = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4, currentYear + 5]
+  
+  const holidays = years.flatMap(year => 
+    getHolidays(year, 'ko').map(holiday => ({
+      ...holiday,
+      isHoliday: true,
+      display: 'background',
+      allDay: true,
+      className: 'holiday-event'
+    }))
+  )
 
   return (
     <>
@@ -216,7 +237,6 @@ export default function Calendar({ userId }: CalendarProps) {
           {
             events: holidays,
             editable: false,
-            className: 'holiday-event'
           }
         ]}
       />

@@ -33,5 +33,10 @@
       "darkMode": "深色模式",
       "multiLanguage": "多语言支持"
     }
+  },
+  "calendar": {
+    "login_required": "请登录后使用此服务",
+    "notification": "通知",
+    "login": "登录"
   }
 } 

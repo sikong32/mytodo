@@ -33,5 +33,10 @@
       "darkMode": "Dark Mode",
       "multiLanguage": "Multi-language Support"
     }
+  },
+  "calendar": {
+    "login_required": "Please login to use this service",
+    "notification": "Notification",
+    "login": "Login"
   }
 } 

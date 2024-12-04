@@ -156,11 +156,16 @@ export default function EditEventModal({
 
   const { mutate: deleteEvent } = useMutation({
     mutationFn: async () => {
+      // 반복 일정의 경우 원본 ID 추출
+      const originalId = event.id.includes('_') 
+        ? event.id.split('_')[0]  // ID가 '_'를 포함하면 앞부분만 사용
+        : event.id                // 아니면 그대로 사용
+
       const { error } = await supabase
         .from('schedules')
         .delete()
-        .eq('id', event.originalEventId || event.id)
-      
+        .eq('id', originalId)
+
       if (error) throw error
     },
     onSuccess: () => {
@@ -223,141 +228,186 @@ export default function EditEventModal({
     setColor(DEFAULT_CATEGORY_COLORS[newCategory as keyof typeof DEFAULT_CATEGORY_COLORS])
   }
 
+  // 삭제 확인 상태 추가
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteMode, setDeleteMode] = useState<'single' | 'all'>('single')
+
+  // 삭제 버튼 클릭 핸들러
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true)
+  }
+
+  // 실제 삭제 실행
+  const handleConfirmDelete = () => {
+    deleteEvent()  // deleteMode 파라미터 제거
+    setShowDeleteConfirm(false)
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="일정 수정">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">카테고리</label>
-          <select
-            value={category}
-            onChange={(e) => handleCategoryChange(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          >
-            {categories.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">제목</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">설명</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">시작 시간</label>
-          <input
-            type="datetime-local"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">종료 시간</label>
-          <input
-            type="datetime-local"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">색상 (선택사항)</label>
-          <div className="mt-1 flex flex-wrap gap-2">
-            {colors.map((c) => (
-              <button
-                key={c.value}
-                type="button"
-                className={`w-8 h-8 rounded-full ${color === c.value ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
-                style={{ backgroundColor: c.value }}
-                onClick={() => setColor(c.value)}
-              />
-            ))}
-            <input
-              type="color"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              className="w-8 h-8 p-0 border-0"
-            />
-          </div>
-        </div>
-
-        
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">반복</label>
-          <select
-            value={recurringPattern}
-            onChange={(e) => {
-              setIsRecurring(!!e.target.value)
-              setRecurringPattern(e.target.value)
-            }}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          >
-            {recurringOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {event.isRecurringInstance && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700">수정 범위</label>
-            <select
-              value={editMode}
-              onChange={(e) => setEditMode(e.target.value as 'single' | 'all')}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            >
-              <option value="single">이 일정만</option>
-              <option value="all">모든 반복 일정</option>
-            </select>
-          </div>
-        )}
-
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={() => deleteEvent()}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
-          >
-            삭제
-          </button>
-          <div className="space-x-2">
+      {showDeleteConfirm ? (
+        <div className="p-4 space-y-4">
+          <h3 className="text-lg font-medium">
+            {event.isRecurringInstance || event.extendedProps?.is_recurring 
+              ? "모든 반복 일정이 삭제됩니다. 계속하시겠습니까?"
+              : "일정을 삭제하시겠습니까?"}
+          </h3>
+          <div className="flex justify-end space-x-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => setShowDeleteConfirm(false)}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
               취소
             </button>
             <button
-              type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              type="button"
+              onClick={handleConfirmDelete}
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
             >
-              저장
+              삭제
             </button>
           </div>
         </div>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">카테고리</label>
+            <select
+              value={category}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            >
+              {categories.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">제목</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">설명</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">시작 시간</label>
+            <input
+              type="datetime-local"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">종료 시간</label>
+            <input
+              type="datetime-local"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">색상 (선택사항)</label>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {colors.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  className={`w-8 h-8 rounded-full ${color === c.value ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
+                  style={{ backgroundColor: c.value }}
+                  onClick={() => setColor(c.value)}
+                />
+              ))}
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                className="w-8 h-8 p-0 border-0"
+              />
+            </div>
+          </div>
+
+          
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">반복</label>
+            <select
+              value={recurringPattern}
+              onChange={(e) => {
+                setIsRecurring(!!e.target.value)
+                setRecurringPattern(e.target.value)
+              }}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            >
+              {recurringOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {event.isRecurringInstance && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">수정 범위</label>
+              <select
+                value={editMode}
+                onChange={(e) => setEditMode(e.target.value as 'single' | 'all')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              >
+                <option value="single">이 일정만</option>
+                <option value="all">모든 반복 일정</option>
+              </select>
+            </div>
+          )}
+
+          {!showDeleteConfirm ? (
+            <div className="flex justify-end space-x-2">
+              {!event.extendedProps?.isHoliday && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleDeleteClick}
+                    className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                  >
+                    삭제
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  >
+                    저장
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                취소
+              </button>
+            </div>
+          ) : null}
+        </form>
+      )}
     </Modal>
   )
 } 

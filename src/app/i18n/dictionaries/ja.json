@@ -33,5 +33,10 @@
       "darkMode": "ダークモード",
       "multiLanguage": "多言語対応"
     }
+  },
+  "calendar": {
+    "login_required": "このサービスを利用するにはログインが必要です",
+    "notification": "お知らせ",
+    "login": "ログイン"
   }
 } 
