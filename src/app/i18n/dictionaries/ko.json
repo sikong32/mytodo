@@ -7,7 +7,12 @@
     "calendar": "캘린더",
     "email": "이메일",
     "password": "비밀번호",
-    "loading": "로딩중..."
+    "loading": "로딩중...",
+    "or": "또는",
+    "processing": "처리중...",
+    "confirmEmail": "가입 확인 이메일을 확인해주세요!",
+    "notification": "알림",
+    "cancel": "취소"
   },
   "auth": {
     "loginTitle": "로그인",
@@ -20,7 +25,19 @@
     "registerError": "회원가입에 실패했습니다",
     "emailConfirmation": "이메일 인증이 필요합니다",
     "resendEmail": "인증 메일 재발송",
-    "emailSent": "인증 메일이 발송되었습니다"
+    "emailSent": "인증 메일이 발송되었습니다",
+    "passwordConfirm": "비밀번호 확인",
+    "passwordConfirmPlaceholder": "비밀번호를 다시 입력하세요",
+    "fullName": "이름",
+    "fullNamePlaceholder": "이름을 입력하세요",
+    "timezone": "타임존",
+    "timezoneHelper": "* 현재 위치의 시간대를 선택하세요",
+    "passwordMismatch": "비밀번호가 일치하지 않습니다",
+    "duplicateEmail": "이미 동일한 이메일로 등록된 사용자가 있습니다",
+    "githubLoginError": "GitHub 로그인에 실패했습니다",
+    "googleLoginError": "Google 로그인에 실패했습니다",
+    "confirmEmail": "이메일 확인이 필요니다",
+    "login": "로그인"
   },
   "home": {
     "welcome": "환영합니다",
@@ -38,5 +55,18 @@
     "login_required": "로그인이 필요한 서비스입니다",
     "notification": "알림",
     "login": "로그인"
+  },
+  "loading": {
+    "title": "로딩 중..."
+  },
+  "timezone": {
+    "Asia/Seoul": "한국 (UTC+9)",
+    "Asia/Tokyo": "일본 (UTC+9)",
+    "Asia/Shanghai": "중국 (UTC+8)",
+    "America/New_York": "뉴욕 (UTC-5)",
+    "America/Los_Angeles": "로스앤젤레스 (UTC-8)",
+    "Europe/London": "런던 (UTC+0)",
+    "Europe/Paris": "파리 (UTC+1)",
+    "Australia/Sydney": "시드니 (UTC+11)"
   }
 } 

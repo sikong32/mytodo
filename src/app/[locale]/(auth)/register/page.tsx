@@ -1,33 +1,41 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
-
-// 주요 타임존 목록
-const TIMEZONES = [
-  { value: 'Asia/Seoul', label: '한국 (UTC+9)' },
-  { value: 'Asia/Tokyo', label: '일본 (UTC+9)' },
-  { value: 'Asia/Shanghai', label: '중국 (UTC+8)' },
-  { value: 'America/New_York', label: '뉴욕 (UTC-5)' },
-  { value: 'America/Los_Angeles', label: '로스앤젤레스 (UTC-8)' },
-  { value: 'Europe/London', label: '런던 (UTC+0)' },
-  { value: 'Europe/Paris', label: '파리 (UTC+1)' },
-  { value: 'Australia/Sydney', label: '시드니 (UTC+11)' },
-]
+import { useDictionary } from '@/hooks/useDictionary'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const pathname = usePathname()
+  const dict = useDictionary()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     passwordConfirm: '',
     full_name: '',
-    timezone: 'Asia/Seoul', // 기본값
+    timezone: 'Asia/Seoul',
     theme: 'light'
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  if (!dict) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500" />
+    </div>
+  }
+
+  const TIMEZONES = [
+    { value: 'Asia/Seoul', label: dict.timezone['Asia/Seoul'] },
+    { value: 'Asia/Tokyo', label: dict.timezone['Asia/Tokyo'] },
+    { value: 'Asia/Shanghai', label: dict.timezone['Asia/Shanghai'] },
+    { value: 'America/New_York', label: dict.timezone['America/New_York'] },
+    { value: 'America/Los_Angeles', label: dict.timezone['America/Los_Angeles'] },
+    { value: 'Europe/London', label: dict.timezone['Europe/London'] },
+    { value: 'Europe/Paris', label: dict.timezone['Europe/Paris'] },
+    { value: 'Australia/Sydney', label: dict.timezone['Australia/Sydney'] },
+  ]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -42,7 +50,7 @@ export default function RegisterPage() {
     setError(null)
 
     if (formData.password !== formData.passwordConfirm) {
-      setError('비밀번호가 일치하지 않습니다')
+      setError(dict.auth.passwordMismatch)
       setLoading(false)
       return
     }
@@ -56,14 +64,14 @@ export default function RegisterPage() {
       if (authError) throw authError
       
       const { data: existingProfile, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('email', formData.email)
-          .single();
+        .from('profiles')
+        .select('*')
+        .eq('email', formData.email)
+        .single()
 
-        if (existingProfile) {
-          throw new Error('이미 동일한 이메일로 등록된 사용자가 있습니다.');
-        }
+      if (existingProfile) {
+        throw new Error(dict.auth.duplicateEmail)
+      }
 
       if (authData.user) {
         const { error: profileError } = await supabase
@@ -80,10 +88,11 @@ export default function RegisterPage() {
         if (profileError) throw profileError
       }
 
-      alert('가입 확인 이메일을 확인해주세요!')
-      router.push('/login')
+      alert(dict.common.confirmEmail)
+      const currentLocale = pathname.split('/')[1] || 'ko'
+      router.push(`/${currentLocale}/login`)
     } catch (error: any) {
-      setError(error.message || '회원가입에 실패했습니다')
+      setError(error.message || dict.auth.registerError)
     } finally {
       setLoading(false)
     }
@@ -92,62 +101,62 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <form onSubmit={handleSignUp} className="w-full max-w-md space-y-4 p-8">
-        <h1 className="text-2xl font-bold">회원가입</h1>
+        <h1 className="text-2xl font-bold">{dict.auth.registerTitle}</h1>
         
         <div>
-          <label className="block text-sm font-medium">이메일</label>
+          <label className="block text-sm font-medium">{dict.common.email}</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="이메일을 입력하세요"
+            placeholder={dict.auth.emailPlaceholder}
             className="mt-1 w-full rounded-md border p-2"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium">비밀번호</label>
+          <label className="block text-sm font-medium">{dict.common.password}</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="비밀번호를 입력하세요"
+            placeholder={dict.auth.passwordPlaceholder}
             className="mt-1 w-full rounded-md border p-2"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium">비밀번호 확인</label>
+          <label className="block text-sm font-medium">{dict.auth.passwordConfirm}</label>
           <input
             type="password"
             name="passwordConfirm"
             value={formData.passwordConfirm}
             onChange={handleChange}
-            placeholder="비밀번호를 다시 입력하세요"
+            placeholder={dict.auth.passwordConfirmPlaceholder}
             className="mt-1 w-full rounded-md border p-2"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium">이름</label>
+          <label className="block text-sm font-medium">{dict.auth.fullName}</label>
           <input
             type="text"
             name="full_name"
             value={formData.full_name}
             onChange={handleChange}
-            placeholder="이름을 입력하세요"
+            placeholder={dict.auth.fullNamePlaceholder}
             className="mt-1 w-full rounded-md border p-2"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium">타임존</label>
+          <label className="block text-sm font-medium">{dict.auth.timezone}</label>
           <select
             name="timezone"
             value={formData.timezone}
@@ -161,7 +170,7 @@ export default function RegisterPage() {
             ))}
           </select>
           <p className="mt-1 text-xs text-gray-500">
-            * 현재 위치의 시간대를 선택하세요
+            {dict.auth.timezoneHelper}
           </p>
         </div>
 
@@ -174,7 +183,7 @@ export default function RegisterPage() {
             loading ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
-          {loading ? '처리중...' : '가입하기'}
+          {loading ? dict.common.processing : dict.auth.registerButton}
         </button>
       </form>
     </div>

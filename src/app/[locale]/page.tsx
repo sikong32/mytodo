@@ -15,6 +15,9 @@ export default async function HomePage({
         <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
           {dict.home.welcome}
         </h1>
+        <p className="text-center text-gray-600">
+          {dict.home.description}
+        </p>
         <div className="flex flex-col space-y-4">
           <Link 
             href={`/${locale}/login`}

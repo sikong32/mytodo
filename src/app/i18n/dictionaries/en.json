@@ -7,7 +7,12 @@
     "calendar": "Calendar",
     "email": "Email",
     "password": "Password",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "or": "or",
+    "processing": "Processing...",
+    "confirmEmail": "Please check your confirmation email!",
+    "notification": "Notification",
+    "cancel": "Cancel"
   },
   "auth": {
     "loginTitle": "Login",
@@ -20,14 +25,26 @@
     "registerError": "Registration failed",
     "emailConfirmation": "Email confirmation required",
     "resendEmail": "Resend confirmation email",
-    "emailSent": "Confirmation email has been sent"
+    "emailSent": "Confirmation email has been sent",
+    "passwordConfirm": "Confirm Password",
+    "passwordConfirmPlaceholder": "Re-enter your password",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "timezone": "Timezone",
+    "timezoneHelper": "* Select your current timezone",
+    "passwordMismatch": "Passwords do not match",
+    "duplicateEmail": "A user with this email already exists",
+    "githubLoginError": "GitHub login failed",
+    "googleLoginError": "Google login failed",
+    "confirmEmail": "Email confirmation required",
+    "login": "Login"
   },
   "home": {
     "welcome": "Welcome",
     "description": "Personal Schedule Management Service",
     "getStarted": "Get Started",
     "features": {
-      "title": "Features",
+      "title": "Key Features",
       "calendar": "Calendar View",
       "scheduling": "Schedule Management",
       "darkMode": "Dark Mode",
@@ -35,8 +52,21 @@
     }
   },
   "calendar": {
-    "login_required": "Please login to use this service",
+    "login_required": "Login required to access this service",
     "notification": "Notification",
     "login": "Login"
+  },
+  "loading": {
+    "title": "Loading..."
+  },
+  "timezone": {
+    "Asia/Seoul": "Korea (UTC+9)",
+    "Asia/Tokyo": "Japan (UTC+9)",
+    "Asia/Shanghai": "China (UTC+8)",
+    "America/New_York": "New York (UTC-5)",
+    "America/Los_Angeles": "Los Angeles (UTC-8)",
+    "Europe/London": "London (UTC+0)",
+    "Europe/Paris": "Paris (UTC+1)",
+    "Australia/Sydney": "Sydney (UTC+11)"
   }
 } 

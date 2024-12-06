@@ -7,7 +7,12 @@
     "calendar": "カレンダー",
     "email": "メール",
     "password": "パスワード",
-    "loading": "読み込み中..."
+    "loading": "読み込み中...",
+    "or": "または",
+    "processing": "処理中...",
+    "confirmEmail": "確認メールをご確認ください！",
+    "notification": "お知らせ",
+    "cancel": "キャンセル"
   },
   "auth": {
     "loginTitle": "ログイン",
@@ -15,12 +20,24 @@
     "emailPlaceholder": "メールアドレスを入力",
     "passwordPlaceholder": "パスワードを入力",
     "loginButton": "ログイン",
-    "registerButton": "登録",
+    "registerButton": "登録する",
     "loginError": "ログインに失敗しました",
     "registerError": "登録に失敗しました",
     "emailConfirmation": "メール認証が必要です",
     "resendEmail": "認証メールを再送信",
-    "emailSent": "認証メールを送信しました"
+    "emailSent": "認証メールを送信しました",
+    "passwordConfirm": "パスワード確認",
+    "passwordConfirmPlaceholder": "パスワードを再入力",
+    "fullName": "氏名",
+    "fullNamePlaceholder": "氏名を入力",
+    "timezone": "タイムゾーン",
+    "timezoneHelper": "* 現在の地域のタイムゾーンを選択してください",
+    "passwordMismatch": "パスワードが一致しません",
+    "duplicateEmail": "このメールアドレスは既に登録されています",
+    "githubLoginError": "GitHubログインに失敗しました",
+    "googleLoginError": "Googleログインに失敗しました",
+    "confirmEmail": "メール確認が必要です",
+    "login": "ログイン"
   },
   "home": {
     "welcome": "ようこそ",
@@ -35,8 +52,21 @@
     }
   },
   "calendar": {
-    "login_required": "このサービスを利用するにはログインが必要です",
+    "login_required": "ログインが必要なサービスです",
     "notification": "お知らせ",
     "login": "ログイン"
+  },
+  "loading": {
+    "title": "読み込み中..."
+  },
+  "timezone": {
+    "Asia/Seoul": "韓国 (UTC+9)",
+    "Asia/Tokyo": "日本 (UTC+9)",
+    "Asia/Shanghai": "中国 (UTC+8)",
+    "America/New_York": "ニューヨーク (UTC-5)",
+    "America/Los_Angeles": "ロサンゼルス (UTC-8)",
+    "Europe/London": "ロンドン (UTC+0)",
+    "Europe/Paris": "パリ (UTC+1)",
+    "Australia/Sydney": "シドニー (UTC+11)"
   }
 } 
