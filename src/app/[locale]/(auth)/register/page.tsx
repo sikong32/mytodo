@@ -56,14 +56,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      })
-
-      if (authError) throw authError
-      
-      const { data: existingProfile, error } = await supabase
+      const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
         .select('*')
         .eq('email', formData.email)
@@ -73,19 +66,30 @@ export default function RegisterPage() {
         throw new Error(dict.auth.duplicateEmail)
       }
 
-      if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: authData.user.id,
-            email: formData.email,
-            full_name: formData.full_name,
-            avatar_url: '',
-            timezone: formData.timezone,
-            theme: formData.theme
-          })
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      })
 
-        if (profileError) throw profileError
+      if (authError) throw authError
+
+      if (authData.user) {
+        try {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .upsert({
+              id: authData.user.id,
+              email: formData.email,
+              full_name: formData.full_name,
+              avatar_url: '',
+              timezone: formData.timezone,
+              theme: formData.theme
+            })
+
+          if (profileError) throw profileError
+        } catch (profileError) {
+          console.error('Profile creation error:', profileError)
+        }
       }
 
       alert(dict.common.confirmEmail)
