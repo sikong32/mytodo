@@ -54,7 +54,51 @@
   "calendar": {
     "login_required": "需要登录才能使用此服务",
     "notification": "通知",
-    "login": "登录"
+    "login": "登录",
+    "addEvent": "添加日程",
+    "editEvent": "编辑日程",
+    "deleteEvent": "删除日程",
+    "category": "类别",
+    "title": "标题",
+    "description": "说明",
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "color": "颜色",
+    "optional": "(可选)",
+    "repeat": "重复",
+    "repeatOptions": {
+      "none": "不重复",
+      "daily": "每天",
+      "weekly": "每周",
+      "monthly": "每月",
+      "yearly": "每年"
+    },
+    "categories": {
+      "default": "默认",
+      "work": "工作",
+      "personal": "个人",
+      "family": "家庭",
+      "holiday": "假期",
+      "other": "其他"
+    },
+    "colors": {
+      "blue": "蓝色",
+      "green": "绿色",
+      "red": "红色",
+      "yellow": "黄色",
+      "purple": "紫色",
+      "gray": "灰色"
+    },
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "deleteConfirm": "确定要删除此日程吗？",
+    "deleteRecurringConfirm": "这将删除所有重复日程。是否继续？",
+    "editMode": {
+      "title": "编辑模式",
+      "single": "仅此日程",
+      "all": "所有重复日程"
+    }
   },
   "loading": {
     "title": "加载中..."

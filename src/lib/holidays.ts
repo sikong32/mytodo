@@ -46,7 +46,7 @@ export function getHolidays(year: number, locale: string = 'ko'): Holiday[] {
 
   switch (locale) {
     case 'ko':
-      // 고정 공휴일
+      // 한국 공휴일
       holidays.push(
         { title: '신정', start: new Date(year, 0, 1), color: '#FF4B4B', allDay: true },
         { title: '삼일절', start: new Date(year, 2, 1), color: '#FF4B4B', allDay: true },
@@ -87,6 +87,59 @@ export function getHolidays(year: number, locale: string = 'ko'): Holiday[] {
       )
       break
 
+    case 'ja':
+      // 일본 공휴일
+      holidays.push(
+        { title: '元日', start: new Date(year, 0, 1), color: '#FF4B4B', allDay: true },
+        { title: '成人の日', start: getNthWeekday(year, 0, 1, 2), color: '#FF4B4B', allDay: true },
+        { title: '建国記念の日', start: new Date(year, 1, 11), color: '#FF4B4B', allDay: true },
+        { title: '天皇誕生日', start: new Date(year, 1, 23), color: '#FF4B4B', allDay: true },
+        { title: '春分の日', start: new Date(year, 2, 20), color: '#FF4B4B', allDay: true },
+        { title: '昭和の日', start: new Date(year, 3, 29), color: '#FF4B4B', allDay: true },
+        { title: '憲法記念日', start: new Date(year, 4, 3), color: '#FF4B4B', allDay: true },
+        { title: 'みどりの日', start: new Date(year, 4, 4), color: '#FF4B4B', allDay: true },
+        { title: 'こどもの日', start: new Date(year, 4, 5), color: '#FF4B4B', allDay: true },
+        { title: '海の日', start: getNthWeekday(year, 6, 1, 3), color: '#FF4B4B', allDay: true },
+        { title: '敬老の日', start: getNthWeekday(year, 8, 1, 3), color: '#FF4B4B', allDay: true },
+        { title: '秋分の日', start: new Date(year, 8, 23), color: '#FF4B4B', allDay: true },
+        { title: 'スポーツの日', start: getNthWeekday(year, 9, 1, 2), color: '#FF4B4B', allDay: true },
+        { title: '文化の日', start: new Date(year, 10, 3), color: '#FF4B4B', allDay: true },
+        { title: '勤労感謝の日', start: new Date(year, 10, 23), color: '#FF4B4B', allDay: true }
+      )
+      break
+
+    case 'zh':
+      // 중국 공휴일
+      const chineseNewYear = lunarToSolar(year, 1, 1)
+      holidays.push(
+        { title: '元旦', start: new Date(year, 0, 1), color: '#FF4B4B', allDay: true },
+        { 
+          title: '春节', 
+          start: chineseNewYear,
+          end: new Date(chineseNewYear.getTime() + 7 * 24 * 60 * 60 * 1000),
+          color: '#FF4B4B',
+          allDay: true 
+        },
+        { title: '清明节', start: new Date(year, 3, 4), color: '#FF4B4B', allDay: true },
+        { 
+          title: '劳动节', 
+          start: new Date(year, 4, 1),
+          end: new Date(year, 4, 3),
+          color: '#FF4B4B',
+          allDay: true 
+        },
+        { title: '端午节', start: lunarToSolar(year, 5, 5), color: '#FF4B4B', allDay: true },
+        { title: '中秋节', start: lunarToSolar(year, 8, 15), color: '#FF4B4B', allDay: true },
+        { 
+          title: '国庆节', 
+          start: new Date(year, 9, 1),
+          end: new Date(year, 9, 7),
+          color: '#FF4B4B',
+          allDay: true 
+        }
+      )
+      break
+
     case 'en':
       // 미국 공휴일
       holidays.push(
@@ -100,65 +153,6 @@ export function getHolidays(year: number, locale: string = 'ko'): Holiday[] {
         { title: "Veterans Day", start: new Date(year, 10, 11), color: '#FF4B4B', allDay: true },
         { title: "Thanksgiving Day", start: getNthWeekday(year, 10, 4, 4), color: '#FF4B4B', allDay: true },
         { title: "Christmas Day", start: new Date(year, 11, 25), color: '#FF4B4B', allDay: true }
-      )
-      break
-
-    case 'ja':
-      // 일본 공휴일
-      const springEquinox = new Date(year, 2, 20) // 대략적인 춘분
-      const autumnEquinox = new Date(year, 8, 22) // 대략적인 추분
-
-      holidays.push(
-        { title: "元日", start: new Date(year, 0, 1), color: '#FF4B4B', allDay: true },
-        { title: "成人の日", start: getNthWeekday(year, 0, 1, 2), color: '#FF4B4B', allDay: true },
-        { title: "建国記念の日", start: new Date(year, 1, 11), color: '#FF4B4B', allDay: true },
-        { title: "天皇誕生日", start: new Date(year, 1, 23), color: '#FF4B4B', allDay: true },
-        { title: "春分の日", start: springEquinox, color: '#FF4B4B', allDay: true },
-        { title: "昭和の日", start: new Date(year, 3, 29), color: '#FF4B4B', allDay: true },
-        { title: "憲法記念日", start: new Date(year, 4, 3), color: '#FF4B4B', allDay: true },
-        { title: "みどりの日", start: new Date(year, 4, 4), color: '#FF4B4B', allDay: true },
-        { title: "こどもの日", start: new Date(year, 4, 5), color: '#FF4B4B', allDay: true },
-        { title: "海の日", start: getNthWeekday(year, 6, 1, 3), color: '#FF4B4B', allDay: true },
-        { title: "敬老の日", start: getNthWeekday(year, 8, 1, 3), color: '#FF4B4B', allDay: true },
-        { title: "秋分の日", start: autumnEquinox, color: '#FF4B4B', allDay: true },
-        { title: "スポーツの日", start: getNthWeekday(year, 9, 1, 2), color: '#FF4B4B', allDay: true },
-        { title: "文化の日", start: new Date(year, 10, 3), color: '#FF4B4B', allDay: true },
-        { title: "勤労感謝の日", start: new Date(year, 10, 23), color: '#FF4B4B', allDay: true }
-      )
-      break
-
-    case 'zh':
-      // 중국 공휴일
-      const chineseNewYear = lunarToSolar(year, 1, 1)
-      const dragonBoat = lunarToSolar(year, 5, 5)
-      const midAutumn = lunarToSolar(year, 8, 15)
-
-      holidays.push(
-        { title: "元旦", start: new Date(year, 0, 1), color: '#FF4B4B', allDay: true },
-        { 
-          title: "春节", 
-          start: chineseNewYear,
-          end: new Date(chineseNewYear.getTime() + 7 * 24 * 60 * 60 * 1000),
-          color: '#FF4B4B',
-          allDay: true 
-        },
-        { title: "清明节", start: new Date(year, 3, 4), color: '#FF4B4B', allDay: true },
-        { 
-          title: "劳动节", 
-          start: new Date(year, 4, 1),
-          end: new Date(year, 4, 3),
-          color: '#FF4B4B',
-          allDay: true 
-        },
-        { title: "端午节", start: dragonBoat, color: '#FF4B4B', allDay: true },
-        { title: "中秋节", start: midAutumn, color: '#FF4B4B', allDay: true },
-        { 
-          title: "国庆节", 
-          start: new Date(year, 9, 1),
-          end: new Date(year, 9, 7),
-          color: '#FF4B4B',
-          allDay: true 
-        }
       )
       break
   }

@@ -54,7 +54,51 @@
   "calendar": {
     "login_required": "Login required to access this service",
     "notification": "Notification",
-    "login": "Login"
+    "login": "Login",
+    "addEvent": "Add Event",
+    "editEvent": "Edit Event",
+    "deleteEvent": "Delete Event",
+    "category": "Category",
+    "title": "Title",
+    "description": "Description",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "color": "Color",
+    "optional": "(Optional)",
+    "repeat": "Repeat",
+    "repeatOptions": {
+      "none": "No Repeat",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "categories": {
+      "default": "Default",
+      "work": "Work",
+      "personal": "Personal",
+      "family": "Family",
+      "holiday": "Holiday",
+      "other": "Other"
+    },
+    "colors": {
+      "blue": "Blue",
+      "green": "Green",
+      "red": "Red",
+      "yellow": "Yellow",
+      "purple": "Purple",
+      "gray": "Gray"
+    },
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this event?",
+    "deleteRecurringConfirm": "This will delete all recurring events. Do you want to continue?",
+    "editMode": {
+      "title": "Edit Mode",
+      "single": "This event only",
+      "all": "All recurring events"
+    }
   },
   "loading": {
     "title": "Loading..."

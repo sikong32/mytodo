@@ -52,9 +52,53 @@
     }
   },
   "calendar": {
-    "login_required": "ログインが必要なサービスです",
+    "login_required": "このサービスを利用するにはログインが必要です",
     "notification": "お知らせ",
-    "login": "ログイン"
+    "login": "ログイン",
+    "addEvent": "予定を追加",
+    "editEvent": "予定を編集",
+    "deleteEvent": "予定を削除",
+    "category": "カテゴリー",
+    "title": "タイトル",
+    "description": "説明",
+    "startTime": "開始時間",
+    "endTime": "終了時間",
+    "color": "色",
+    "optional": "(任意)",
+    "repeat": "繰り返し",
+    "repeatOptions": {
+      "none": "繰り返しなし",
+      "daily": "毎日",
+      "weekly": "毎週",
+      "monthly": "毎月",
+      "yearly": "毎年"
+    },
+    "categories": {
+      "default": "デフォルト",
+      "work": "仕事",
+      "personal": "個人",
+      "family": "家族",
+      "holiday": "休暇",
+      "other": "その他"
+    },
+    "colors": {
+      "blue": "青",
+      "green": "緑",
+      "red": "赤",
+      "yellow": "黄",
+      "purple": "紫",
+      "gray": "灰色"
+    },
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "deleteConfirm": "この予定を削除してもよろしいですか？",
+    "deleteRecurringConfirm": "すべての繰り返し予定が削除されます。続行しますか？",
+    "editMode": {
+      "title": "編集モード",
+      "single": "この予定のみ",
+      "all": "すべての繰り返し予定"
+    }
   },
   "loading": {
     "title": "読み込み中..."

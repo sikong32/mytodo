@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Modal from '@/components/common/Modal'
+import { useDictionary } from '@/hooks/useDictionary'
 
 interface AddEventModalProps {
   isOpen: boolean
@@ -30,6 +31,7 @@ export default function AddEventModal({
   selectedEndDate,
   userId
 }: AddEventModalProps) {
+  const dict = useDictionary()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [startTime, setStartTime] = useState(
@@ -123,18 +125,20 @@ export default function AddEventModal({
   }
 
   const recurringOptions = [
-    { value: '', label: '반복 안함' },
+    { value: 'none', label: '반복 안함' },
     { value: 'daily', label: '매일' },
     { value: 'weekly', label: '매주' },
     { value: 'monthly', label: '매월' },
     { value: 'yearly', label: '매년' }
   ]
 
+  if (!dict) return null
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="일정 추가">
+    <Modal isOpen={isOpen} onClose={onClose} title={dict.calendar.addEvent}>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">카테고리</label>
+          <label className="block text-sm font-medium text-gray-700">{dict.calendar.category}</label>
           <select
             value={category}
             onChange={(e) => handleCategoryChange(e.target.value)}
@@ -142,13 +146,13 @@ export default function AddEventModal({
           >
             {categories.map((cat) => (
               <option key={cat.value} value={cat.value}>
-                {cat.label}
+                {dict.calendar.categories[cat.value as keyof typeof dict.calendar.categories]}
               </option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">제목</label>
+          <label className="block text-sm font-medium text-gray-700">{dict.calendar.title}</label>
           <input
             type="text"
             value={title}
@@ -158,7 +162,7 @@ export default function AddEventModal({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">설명</label>
+          <label className="block text-sm font-medium text-gray-700">{dict.calendar.description}</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -166,7 +170,7 @@ export default function AddEventModal({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">시작 시간</label>
+          <label className="block text-sm font-medium text-gray-700">{dict.calendar.startTime}</label>
           <input
             type="datetime-local"
             value={startTime}
@@ -176,7 +180,7 @@ export default function AddEventModal({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">종료 시간</label>
+          <label className="block text-sm font-medium text-gray-700">{dict.calendar.endTime}</label>
           <input
             type="datetime-local"
             value={endTime}
@@ -186,7 +190,9 @@ export default function AddEventModal({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">색상 (선택사항)</label>
+          <label className="block text-sm font-medium text-gray-700">
+            {dict.calendar.color} {dict.calendar.optional}
+          </label>
           <div className="mt-1 flex flex-wrap gap-2">
             {colors.map((c) => (
               <button
@@ -195,34 +201,27 @@ export default function AddEventModal({
                 className={`w-8 h-8 rounded-full ${color === c.value ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
                 style={{ backgroundColor: c.value }}
                 onClick={() => setColor(c.value)}
+                title={dict.calendar.colors[c.label.toLowerCase() as keyof typeof dict.calendar.colors]}
               />
             ))}
-            <input
-              type="color"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              className="w-8 h-8 p-0 border-0"
-            />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">반복</label>
-          <div className="mt-1">
-            <select
-              value={recurringPattern}
-              onChange={(e) => {
-                setIsRecurring(!!e.target.value)
-                setRecurringPattern(e.target.value)
-              }}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            >
-              {recurringOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <label className="block text-sm font-medium text-gray-700">{dict.calendar.repeat}</label>
+          <select
+            value={recurringPattern}
+            onChange={(e) => {
+              setIsRecurring(!!e.target.value)
+              setRecurringPattern(e.target.value)
+            }}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          >
+            {recurringOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {dict.calendar.repeatOptions[option.value as keyof typeof dict.calendar.repeatOptions]}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex justify-end space-x-2">
           <button
@@ -230,13 +229,13 @@ export default function AddEventModal({
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
           >
-            취소
+            {dict.calendar.cancel}
           </button>
           <button
             type="submit"
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
           >
-            저장
+            {dict.calendar.save}
           </button>
         </div>
       </form>

@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
+import CalendarSkeleton from './CalendarSkeleton'
 import { useTranslations } from 'next-intl'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -14,6 +17,7 @@ import { Schedule } from '@/types/schedule'
 import { getHolidays } from '@/lib/holidays'
 import { addDays, addWeeks, addMonths, addYears } from 'date-fns'
 import Modal from '@/components/common/Modal'
+import { useDictionary } from '@/hooks/useDictionary'
 
 interface CalendarProps {
   userId?: string
@@ -95,6 +99,7 @@ function generateRecurringEvents(event: any) {
 }
 
 export default function Calendar({ userId }: CalendarProps) {
+  const dict = useDictionary()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<Schedule | null>(null)
@@ -104,6 +109,9 @@ export default function Calendar({ userId }: CalendarProps) {
   
   const supabase = createClientComponentClient()
   const queryClient = useQueryClient()
+  const router = useRouter()
+  const params = useParams()
+  const currentLocale = params.locale as string
 
   const { data: events = [] } = useQuery({
     queryKey: ['events', userId],
@@ -201,7 +209,7 @@ export default function Calendar({ userId }: CalendarProps) {
   const years = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4, currentYear + 5]
   
   const holidays = years.flatMap(year => 
-    getHolidays(year, 'ko').map(holiday => ({
+    getHolidays(year, currentLocale).map(holiday => ({
       ...holiday,
       isHoliday: true,
       display: 'background',
@@ -209,6 +217,10 @@ export default function Calendar({ userId }: CalendarProps) {
       className: 'holiday-event'
     }))
   )
+
+  if (!dict) {
+    return <CalendarSkeleton />
+  }
 
   return (
     <>
@@ -227,7 +239,7 @@ export default function Calendar({ userId }: CalendarProps) {
         dayMaxEvents={true}
         select={handleDateSelect}
         eventClick={handleEventClick}
-        locale="ko"
+        locale={currentLocale}
         eventDrop={handleEventDrop}
         eventSources={[
           {
@@ -257,6 +269,35 @@ export default function Calendar({ userId }: CalendarProps) {
           event={selectedEvent}
           userId={userId}
         />
+      )}
+
+      {showLoginModal && (
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          title={dict.common.notification}
+        >
+          <div className="p-4">
+            <p className="mb-4">{dict.calendar.login_required}</p>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => {
+                  setShowLoginModal(false)
+                  router.push(`/${currentLocale}/login`)
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                {dict.common.login}
+              </button>
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                {dict.common.cancel}
+              </button>
+            </div>
+          </div>
+        </Modal>
       )}
     </>
   )
