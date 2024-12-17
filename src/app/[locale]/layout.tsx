@@ -27,8 +27,8 @@ export default function LocaleLayout({
           <main className="pt-16">
             {children}
           </main>
-          <SpeedInsights />
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   )
