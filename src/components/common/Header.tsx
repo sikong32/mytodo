@@ -95,17 +95,17 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
           <Link 
             href={`/${currentLocale}/calendar`} 
-            className="text-xl font-bold"
+            className="text-lg font-bold"
             onClick={handleCalendarClick}
           >
             {dict.common.appName}
           </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <div className="relative group">
-              <button className="flex items-center gap-2 px-3 py-2 text-sm border rounded-md hover:bg-gray-50">
-                <FaGlobeAsia className="text-gray-500" />
-                {LOCALES.find(locale => locale.code === currentLocale)?.label}
+              <button className="flex items-center gap-1 px-2 py-1 text-sm border rounded-md hover:bg-gray-50">
+                <FaGlobeAsia className="text-gray-500 text-sm" />
+                <span className="hidden sm:inline">{LOCALES.find(locale => locale.code === currentLocale)?.label}</span>
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 {LOCALES.map((locale) => {
@@ -117,7 +117,7 @@ export default function Header() {
                       className={`w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50 
                         ${currentLocale === locale.code ? 'bg-gray-50' : ''}`}
                     >
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-4 h-4" />
                       {locale.label}
                     </button>
                   )
@@ -127,12 +127,12 @@ export default function Header() {
 
             {user ? (
               <>
-                <span className="text-sm text-gray-600">
+                <span className="hidden sm:inline text-sm text-gray-600">
                   {user.email}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
+                  className="px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded-md"
                 >
                   {dict.common.logout}
                 </button>
@@ -141,13 +141,13 @@ export default function Header() {
               <>
                 <Link
                   href={`/${currentLocale}/login`}
-                  className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                  className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
                 >
                   {dict.common.login}
                 </Link>
                 <Link
                   href={`/${currentLocale}/register`}
-                  className="px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-600 rounded-md"
+                  className="px-3 py-1 text-sm text-white bg-blue-500 hover:bg-blue-600 rounded-md"
                 >
                   {dict.common.register}
                 </Link>

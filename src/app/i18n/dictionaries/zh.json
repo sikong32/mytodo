@@ -112,5 +112,10 @@
     "Europe/London": "伦敦 (UTC+0)",
     "Europe/Paris": "巴黎 (UTC+1)",
     "Australia/Sydney": "悉尼 (UTC+11)"
+  },
+  "register": {
+    "completeTitle": "注册成功！",
+    "completeMessage": "验证邮箱后即可使用所有服务。",
+    "redirectMessage": "5秒后将跳转到登录页面..."
   }
 } 

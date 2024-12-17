@@ -112,5 +112,10 @@
     "Europe/London": "ロンドン (UTC+0)",
     "Europe/Paris": "パリ (UTC+1)",
     "Australia/Sydney": "シドニー (UTC+11)"
+  },
+  "register": {
+    "completeTitle": "会員登録が完了しました！",
+    "completeMessage": "メール認証が完了すると、すべてのサービスをご利用いただけます。",
+    "redirectMessage": "5秒後にログインページに移動します..."
   }
 } 

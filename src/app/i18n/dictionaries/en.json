@@ -112,5 +112,10 @@
     "Europe/London": "London (UTC+0)",
     "Europe/Paris": "Paris (UTC+1)",
     "Australia/Sydney": "Sydney (UTC+11)"
+  },
+  "register": {
+    "completeTitle": "Registration Complete!",
+    "completeMessage": "You can access all services after verifying your email.",
+    "redirectMessage": "Redirecting to login page in 5 seconds..."
   }
 } 

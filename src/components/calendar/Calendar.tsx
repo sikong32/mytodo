@@ -187,8 +187,29 @@ export default function Calendar({ userId }: CalendarProps) {
     }
     setSelectedEndDate(endDate)
   }
+  const handleDateClick = (info: any) => {
+    if (!userId) {
+      setShowLoginModal(true)
+      return
+    }
+    
+    // 클릭한 날짜를 선택된 날짜로 설정
+    setSelectedDate(info.date)
+    
+    // 종료 시간은 시작 시간으로부터 1시간 후로 설정
+    const endDate = new Date(info.date)
+    endDate.setHours(endDate.getHours() + 1)
+    setSelectedEndDate(endDate)
+    
+    // 일정 추가 모달 열기
+    setIsAddModalOpen(true)
+  }
 
   const handleEventClick = (clickInfo: any) => {
+    if (clickInfo.event.extendedProps.isHoliday) {
+      return;
+    }
+
     if (!userId) {
       setShowLoginModal(true)
       return
@@ -223,7 +244,7 @@ export default function Calendar({ userId }: CalendarProps) {
   }
 
   return (
-    <>
+    <div className="calendar-container max-w-full overflow-x-auto">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -234,20 +255,51 @@ export default function Calendar({ userId }: CalendarProps) {
         }}
         allDaySlot={false}
         editable={true}
+        dayMaxEventRows={true}
+        moreLinkClick="popover"
+        eventDisplay="block"
+        height="auto"
+        contentHeight="auto"
+        aspectRatio={1.8}
+        dateClick={handleDateClick}
+        eventClick={handleEventClick}
+        stickyHeaderDates={true}
+        handleWindowResize={true}
+        views={{
+          dayGridMonth: {
+            titleFormat: { year: 'numeric', month: 'long' },
+            dayMaxEventRows: 4,
+          },
+          timeGridWeek: {
+            titleFormat: { year: 'numeric', month: 'long' },
+            dayMaxEventRows: 4,
+          },
+          timeGridDay: {
+            titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
+          }
+        }}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
         select={handleDateSelect}
-        eventClick={handleEventClick}
+        eventTimeFormat={{
+          hour: 'numeric',
+          minute: '2-digit',
+          meridiem: false
+        }}
         locale={currentLocale}
         eventDrop={handleEventDrop}
         eventSources={[
           {
             events: events,
+            className: 'custom-event',
+            editable: true,
           },
           {
             events: holidays,
+            className: 'holiday-event',
             editable: false,
+            display: 'background'
           }
         ]}
       />
@@ -299,6 +351,6 @@ export default function Calendar({ userId }: CalendarProps) {
           </div>
         </Modal>
       )}
-    </>
+    </div>
   )
 }

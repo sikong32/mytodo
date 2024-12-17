@@ -12,3 +12,153 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
 } 
+
+/* FullCalendar 모바일 최적화 스타일 */
+.calendar-container {
+  padding: 1rem;
+}
+
+/* 모바일에서 이벤트 터치 영역 확대 */
+.fc-event {
+  padding: 2px 4px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* 모바일에서 달력 헤더 최적화 */
+.fc-header-toolbar {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 모바일에서 버튼 크기 조정 */
+.fc-button {
+  padding: 0.4em 0.65em !important;
+  font-size: 0.9em !important;
+}
+
+/* 반응형 그리드 조정 */
+@media (max-width: 768px) {
+  .fc .fc-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.2em;
+  }
+
+  .fc-header-toolbar {
+    margin-bottom: 0.5em !important;
+  }
+
+  .fc-view-harness {
+    height: auto !important;
+  }
+
+  .fc-daygrid-event {
+    white-space: normal !important;
+  }
+} 
+
+/* 기본 캘린더 컨테이너 스타일 */
+.calendar-container {
+  padding: 1rem;
+}
+
+/* PC 환경에서의 날짜 셀 크기 조정 */
+@media (min-width: 768px) {
+  .fc .fc-daygrid-day-frame {
+    min-height: 120px !important;  /* 높이 증가 */
+    padding: 8px !important;       /* 패딩 추가 */
+  }
+  
+  .fc .fc-daygrid-day-events {
+    margin-top: 4px;              /* 이벤트 간격 조정 */
+  }
+}
+
+/* 모바일 환경에서의 이벤트 스타일링 */
+@media (max-width: 767px) {
+  .fc-daygrid-event {
+    margin: 1px 0 !important;
+    padding: 2px 4px !important;
+    font-size: 0.8em !important;
+  }
+
+  .fc-daygrid-day-events {
+    margin: 0 !important;
+  }
+
+  .fc .fc-daygrid-event {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* 모바일에서 날짜 셀 높이 조정 */
+  .fc .fc-daygrid-day-frame {
+    min-height: 80px !important;
+  }
+}
+
+/* 공통 이벤트 스타일 */
+.fc-event {
+  border-radius: 4px !important;
+  border: none !important;
+  margin: 2px 0 !important;
+}
+
+/* 이벤트 내부 텍스트 스타일링 */
+.fc-event-title {
+  padding: 2px 4px !important;
+  font-weight: 500 !important;
+}
+
+/* 날짜 그리드 스타일링 */
+.fc-daygrid-day {
+  border: 1px solid #e5e7eb !important;
+}
+
+/* 더보기 버튼 스타일링 */
+.fc-daygrid-more-link {
+  font-size: 0.85em !important;
+  color: #4b5563 !important;
+  background: #f3f4f6 !important;
+  padding: 2px 4px !important;
+  border-radius: 4px !important;
+  margin-top: 2px !important;
+}
+
+/* 헤더 툴바 반응형 조정 */
+@media (max-width: 767px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.2em !important;
+  }
+}
+
+/* 주말 색상 */
+.fc-day-sun {
+  color: #e53e3e !important;
+}
+
+.fc-day-sat {
+  color: #3182ce !important;
+}
+
+/* 공휴일 스타일 */
+.holiday-event {
+  pointer-events: none !important;  /* 클릭 이벤트 비활성화 */
+  background-color: rgba(255, 0, 25, 0.5) !important;  /* 빨간색 배경 (투명도 적용) */
+}
+
+/* 일반 이벤트 스타일 */
+.custom-event {
+  cursor: pointer !important;
+} 

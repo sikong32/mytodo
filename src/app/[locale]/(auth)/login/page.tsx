@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname  } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { useDictionary } from '@/hooks/useDictionary'
@@ -9,6 +9,7 @@ import { useDictionary } from '@/hooks/useDictionary'
 export default function LoginPage() {
   const dict = useDictionary()
   const router = useRouter()
+  const pathname = usePathname()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -45,7 +46,8 @@ export default function LoginPage() {
       }
 
       if (data?.user) {
-        router.push('/calendar')
+        const currentLocale = pathname.split('/')[1] || 'ko'
+        router.push('/${currentLocale}/calendar')
         router.refresh()
       }
     } catch (error: any) {

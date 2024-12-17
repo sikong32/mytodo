@@ -104,7 +104,7 @@
     "title": "로딩 중..."
   },
   "timezone": {
-    "Asia/Seoul": "한국 (UTC+9)",
+    "Asia/Seoul": "대한민국 (UTC+9)",
     "Asia/Tokyo": "일본 (UTC+9)",
     "Asia/Shanghai": "중국 (UTC+8)",
     "America/New_York": "뉴욕 (UTC-5)",
@@ -112,5 +112,10 @@
     "Europe/London": "런던 (UTC+0)",
     "Europe/Paris": "파리 (UTC+1)",
     "Australia/Sydney": "시드니 (UTC+11)"
+  },
+  "register": {
+    "completeTitle": "회원가입을 축하합니다!",
+    "completeMessage": "이메일 인증을 완료하시면 모든 서비스를 이용하실 수 있습니다.",
+    "redirectMessage": "5초 후 로그인 페이지로 이동합니다..."
   }
 } 
