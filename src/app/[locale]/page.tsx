@@ -20,18 +20,6 @@ export default async function HomePage({
         </p>
         <div className="flex flex-col space-y-4">
           <Link 
-            href={`/${locale}/login`}
-            className="w-full py-3 px-4 text-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            {dict.common.login}
-          </Link>
-          <Link 
-            href={`/${locale}/register`}
-            className="w-full py-3 px-4 text-center border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors"
-          >
-            {dict.common.register}
-          </Link>
-          <Link 
             href={`/${locale}/calendar`}
             className="w-full py-3 px-4 text-center border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
           >

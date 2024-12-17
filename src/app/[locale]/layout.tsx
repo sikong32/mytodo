@@ -12,6 +12,10 @@ const inter = Inter({ subsets: ['latin'] })
 export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ locale }))
 }
+export const metadata = {
+  robots: 'index, follow',
+  googlebot: 'index, follow'
+}
 
 export default function LocaleLayout({
   children,
