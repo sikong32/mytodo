@@ -117,5 +117,13 @@
     "completeTitle": "注册成功！",
     "completeMessage": "验证邮箱后即可使用所有服务。",
     "redirectMessage": "5秒后将跳转到登录页面..."
+  },
+  "footer": {
+    "description": "更智能地管理您的日程",
+    "links": "常用链接",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "contact": "联系我们",
+    "rights": "版权所有"
   }
 } 

@@ -117,5 +117,13 @@
     "completeTitle": "会員登録が完了しました！",
     "completeMessage": "メール認証が完了すると、すべてのサービスをご利用いただけます。",
     "redirectMessage": "5秒後にログインページに移動します..."
+  },
+  "footer": {
+    "description": "スケジュールをよりスマートに管理",
+    "links": "便利なリンク",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "contact": "お問い合わせ",
+    "rights": "All Rights Reserved"
   }
 } 

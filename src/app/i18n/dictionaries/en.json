@@ -117,5 +117,13 @@
     "completeTitle": "Registration Complete!",
     "completeMessage": "You can access all services after verifying your email.",
     "redirectMessage": "Redirecting to login page in 5 seconds..."
+  },
+  "footer": {
+    "description": "Manage your schedule smarter",
+    "links": "Useful Links",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us",
+    "rights": "All Rights Reserved"
   }
 } 
