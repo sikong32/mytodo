@@ -20,17 +20,10 @@ export default function Footer() {
   return (
     <footer className="bg-gray-100 mt-auto">
       {/* 광고 섹션 */}
-      <div className="w-full flex justify-center py-4 border-t">
-        <div id="ad-container" className="w-full max-w-[728px] h-[90px]">
-          <ins className="adsbygoogle"
-              style={{ display: 'block' }}
-              data-ad-client="ca-pub-9264904336462451"
-              data-ad-slot="YOUR-AD-SLOT"
-              data-ad-format="auto"
-              data-full-width-responsive="true">
-          </ins>
-        </div>
-      </div>
+
+      {/* Google AdSense 스크립트 */}
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9264904336462451"
+     crossOrigin="anonymous"></script>
     </footer>
   )
 } 
