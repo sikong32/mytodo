@@ -22,16 +22,6 @@ export async function middleware(req: NextRequest) {
 
 
 
-  // 루트 경로 리다이렉트 처리
-
-  if (req.nextUrl.pathname === '/') {
-
-    return NextResponse.redirect(new URL('/ko', req.url))
-
-  }
-
-
-
   // 인증이 필요한 페이지에 대한 접근 제어
 
   if (!session && req.nextUrl.pathname.startsWith('/calendar')) {
@@ -64,6 +54,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 
-  matcher: ['/', '/calendar/:path*', '/login', '/register']
+  matcher: ['/calendar/:path*', '/login', '/register']
 
 } 
