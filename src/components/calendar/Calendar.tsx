@@ -1,6 +1,6 @@
 'use client'
-
-import { useState } from 'react'
+// 필요한 라이브러리와 컴포넌트들을 임포트
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import CalendarSkeleton from './CalendarSkeleton'
@@ -20,17 +20,19 @@ import Modal from '@/components/common/Modal'
 import { useDictionary } from '@/hooks/useDictionary'
 
 interface CalendarProps {
-  userId?: string
+  userId?: string // 선택적 userId 프롭
 }
 
+// 반복 일정을 생성하는 유틸리티 함수
 function generateRecurringEvents(event: any) {
   if (!event.is_recurring || !event.recurring_pattern) return [event]
   
   const events = []
   const startDate = new Date(event.start_time)
   const endDate = new Date(event.end_time)
-  const duration = endDate.getTime() - startDate.getTime()
+  const duration = endDate.getTime() - startDate.getTime() // 이벤트 지속 시간 계산
   
+  // 첫 번째 이벤트 인스턴스 생성
   events.push({
     ...event,
     id: `${event.id}_${startDate.getTime()}`,
@@ -41,7 +43,7 @@ function generateRecurringEvents(event: any) {
     isRecurringInstance: true,
     originalEventId: event.id
   })
-
+  // 반복 패턴에 따른 최대 날짜 설정
   let maxDate: Date
   switch (event.recurring_pattern) {
     case 'daily':
@@ -59,9 +61,10 @@ function generateRecurringEvents(event: any) {
     default:
       return [event]
   }
-
+  // 반복 이벤트 생성
   let prevEventStart = startDate
   while (true) {
+    // ... 반복 로직 ...
     let nextEventStart
     switch (event.recurring_pattern) {
       case 'daily':
@@ -99,23 +102,28 @@ function generateRecurringEvents(event: any) {
 }
 
 export default function Calendar({ userId }: CalendarProps) {
-  const dict = useDictionary()
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<Schedule | null>(null)
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null)
-  const [showLoginModal, setShowLoginModal] = useState(false)
+  // 상태 관리
+  const dict = useDictionary() // 다국어 사전
+  const calendarRef = useRef<FullCalendar>(null) // 캘린더 ref
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false) // 일정 추가 모달
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false) // 일정 수정 모달
+  const [selectedEvent, setSelectedEvent] = useState<Schedule | null>(null) // 선택된 일정
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null) // 선택된 날짜
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null) // 선택된 종료 날짜
+  const [showLoginModal, setShowLoginModal] = useState(false) // 로그인 모달
   
+  // Supabase 클라이언트 및 기타 훅 초기화
   const supabase = createClientComponentClient()
   const queryClient = useQueryClient()
   const router = useRouter()
   const params = useParams()
   const currentLocale = params.locale as string
 
+  // 일정 데이터 가져오기
   const { data: events = [] } = useQuery({
     queryKey: ['events', userId],
     queryFn: async () => {
+      // ... 일정 데이터 조회 로직 ...
       const { data, error } = await supabase
         .from('schedules')
         .select('*')
@@ -152,7 +160,9 @@ export default function Calendar({ userId }: CalendarProps) {
     refetchOnWindowFocus: false
   })
 
+  // 일정 업데이트 뮤테이션
   const { mutate: updateEvent } = useMutation({
+    // ... 일정 업데이트 로직 ...
     mutationFn: async ({ id, start, end }: { id: string; start: Date; end: Date }) => {
       const { data, error } = await supabase
         .from('schedules')
@@ -174,7 +184,9 @@ export default function Calendar({ userId }: CalendarProps) {
     }
   })
 
+  // 날짜 선택 핸들러
   const handleDateSelect = (selectInfo: any) => {
+    // ... 날짜 선택 처리 ...
     if (!userId) {
       setShowLoginModal(true)
       return
@@ -187,6 +199,8 @@ export default function Calendar({ userId }: CalendarProps) {
     }
     setSelectedEndDate(endDate)
   }
+
+  // 날짜 클릭 핸들러
   const handleDateClick = (info: any) => {
     if (!userId) {
       setShowLoginModal(true)
@@ -205,6 +219,7 @@ export default function Calendar({ userId }: CalendarProps) {
     setIsAddModalOpen(true)
   }
 
+  // 일정 클릭 핸들러
   const handleEventClick = (clickInfo: any) => {
     if (clickInfo.event.extendedProps.isHoliday) {
       return;
@@ -218,6 +233,7 @@ export default function Calendar({ userId }: CalendarProps) {
     setIsEditModalOpen(true)
   }
 
+  // 일정 드래그 앤 드롭 핸들러
   const handleEventDrop = (dropInfo: any) => {
     updateEvent({
       id: dropInfo.event.id,
@@ -226,11 +242,12 @@ export default function Calendar({ userId }: CalendarProps) {
     })
   }
 
+  // 공휴일 데이터 처리
   const currentYear = new Date().getFullYear()
   const years = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4, currentYear + 5]
-  
   const holidays = years.flatMap(year => 
     getHolidays(year, currentLocale).map(holiday => ({
+      // ... 공휴일 데이터 변환 ...
       ...holiday,
       isHoliday: true,
       display: 'background',
@@ -239,13 +256,16 @@ export default function Calendar({ userId }: CalendarProps) {
     }))
   )
 
+  // 사전 로딩 체크
   if (!dict) {
     return <CalendarSkeleton />
   }
 
+  // 캘린더 렌더링
   return (
     <div className="calendar-container max-w-full overflow-x-auto">
       <FullCalendar
+        // ... FullCalendar 설정 ...
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         headerToolbar={{
@@ -303,7 +323,7 @@ export default function Calendar({ userId }: CalendarProps) {
           }
         ]}
       />
-
+      {/* 모달 컴포넌트들 */}
       {isAddModalOpen && (
         <AddEventModal
           isOpen={isAddModalOpen}

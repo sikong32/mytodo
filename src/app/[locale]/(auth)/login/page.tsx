@@ -46,8 +46,11 @@ export default function LoginPage() {
       }
 
       if (data?.user) {
-        const currentLocale = pathname.split('/')[1] || 'ko'
-        router.push('/${currentLocale}/calendar')
+        let currentLocale = pathname.split('/')[1] || 'ko'
+        if(!['ko','en','zh','ja'].includes(currentLocale)){
+          currentLocale = 'ko';
+        }
+        router.push(`/${currentLocale}/calendar`)
         router.refresh()
       }
     } catch (error: any) {
